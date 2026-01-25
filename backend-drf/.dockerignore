@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+.env*
+.git
+.gitignore
+
+db.sqlite3
+media/
+
+stock_prediction_model.keras
+
+node_modules/
+venv/

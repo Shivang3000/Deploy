@@ -10,4 +10,9 @@ PyJWT==2.10.1
 scikit-learn==1.7.2
 tensorflow==2.10.0
 yfinance==1.0
-psycopg2==2.9.11
+psycopg2-binary==2.9.11
+
+asgiref==3.11.0
+pillow==12.0.0
+python-decouple==3.8
+sqlparse==0.5.4

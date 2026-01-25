@@ -13,11 +13,24 @@ import numpy as np
 import matplotlib.pyplot as plt
 from  datetime import datetime
 from sklearn.preprocessing import MinMaxScaler
-from keras.models import load_model
+#from keras.models import load_model
+from tensorflow.keras.models import load_model
 from sklearn.metrics import mean_squared_error, r2_score
 
 # helper function
 from .utils import save_plot
+
+# Docker Compatialble logic
+from django.conf import settings
+
+_model = None
+
+def get_model():
+    global _model
+    if _model is None:
+        _model = load_model(settings.MODEL_PATH)
+    return _model
+
 
 class StockPredictionAPIView(APIView):
     def post(self, request):
@@ -89,7 +102,7 @@ class StockPredictionAPIView(APIView):
             scaler = MinMaxScaler(feature_range=(0,1))
 
             # Load ML model
-            model = load_model('stock_prediction_model.keras')
+            # model = load_model('stock_prediction_model.keras')
 
             # preparing test data
             past_100_days = data_training.tail(100)
@@ -107,6 +120,7 @@ class StockPredictionAPIView(APIView):
             x_test, y_test = np.array(x_test), np.array(y_test)
 
             # maping predictions
+            model = get_model()
             y_predicted = model.predict(x_test)
 
             # Revert the scaled prices to the original price
