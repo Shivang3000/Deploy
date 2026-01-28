@@ -29,7 +29,7 @@ services:
     build:
       context: ./frontend-react
       args:
-        VITE_BACKEND_BASE_API: "http://127.0.0.1:8000/api/v1"
+        VITE_BACKEND_BASE_API: "http://178.16.139.162:8000/api/v1"
     ports:
       - "5173:80"
     depends_on:
