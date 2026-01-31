@@ -1,18 +1,18 @@
 # Stage 1: Build
-FROM node:20 AS build
+FROM node:18 AS build
 
 WORKDIR /app
 
 COPY package*.json ./
 RUN npm install
 
+COPY . .
+
 # Build arguments for environment variables
-ARG VITE_BACKEND_BASE_API
+ARG VITE_SERVER_BASE_URL
 
 # This line passes an environment variable into the Docker container so the React app knows the backend API URL.
-ENV VITE_BACKEND_BASE_API=$VITE_SERVER_BASE_URL
-
-COPY . .
+ENV VITE_SERVER_BASE_URL=$VITE_SERVER_BASE_URL
 
 RUN npm run build
 
