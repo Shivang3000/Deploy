@@ -1,22 +1,25 @@
 # Stage 1: Build
-FROM node:18 AS build
+FROM node:18-alpine AS build
 
 WORKDIR /app
 
+# Copy package files first for better layer caching
 COPY package*.json ./
-RUN npm install
 
+# Use npm ci instead of npm install (faster and more reliable)
+RUN npm ci --prefer-offline --no-audit
+
+# Copy source code after dependencies
 COPY . .
 
-# Build arguments for environment variables
-ARG VITE_SERVER_BASE_URL
+# Build argument
+ARG VITE_BACKEND_BASE_API
+ENV VITE_BACKEND_BASE_API=$VITE_BACKEND_BASE_API
 
-# This line passes an environment variable into the Docker container so the React app knows the backend API URL.
-ENV VITE_SERVER_BASE_URL=$VITE_SERVER_BASE_URL
-
+# Build the app
 RUN npm run build
 
-# Stage 2: Nginx, alpine means the lighter version of Nginx
+# Stage 2: Nginx
 FROM nginx:alpine
 
 # Copy build output to Nginx html directory
